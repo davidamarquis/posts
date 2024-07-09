@@ -1,9 +1,14 @@
----
-layout: post
-title:  "Pari debug"
-date: 2020-08-14 14:31:39
----
 Recently I've spent a lot of time trying to read PARI code. This tutorial explains the best way I found for doing it, some basic debugging commands, and some ways to make using the debugger less painful.
+I'll focus on using ```gdb``` to learn about PARI's source code. 
+
+PARI/GP https://pari.math.u-bordeaux.fr/ is a computational number theory project that has been running since 1995.
+It has two main parts: a large library of low-level C code for (PARI) and a frontend for the
+library, a shell called ```gp.```
+There is some documentation of the PARI library, but what is available is aimed at explaining what is done.
+For me, the documentation is not sufficient to understand what is done, let alone *why* it's done which is what we're ultimately after.
+Debugging tools like ```gdb``` make it easier to understand the code. 
+They give a way to step through the library code and view variables as they change (their state) which helps to 
+get a handle on what is happening.
 
 To start, lets review the options for debugging GP programs. There's nothing I could find in the docs specifically aimed at reading PARI source code but they do mention some methods for debugging your own GP scripts:
 * The debug level can be set in GP using \g. E.g. \g 3
@@ -87,8 +92,6 @@ Running
 you should see some lines from the main function in gp.c in the main window.
 
 Visual debugging uses the PARI source files to let you move around the codebase. Clicking the *Fetch source files* button will load these files. If everything is working you should be able to open the PARI source directory.  
-
-Looking for image here {{ site.baseurl }}/imgs/image.png
 ![gdbgui](/imgs/image.png)
 
 Earlier we set a breakpoint using the gdb command line on the bnfinit0 function in buch2.c. We can navigate to this file by opening basemath/buch2.c in the src directory. To locate the function we can try the *jump to line* box.  
